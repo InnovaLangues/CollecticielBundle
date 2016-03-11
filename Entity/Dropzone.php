@@ -1143,4 +1143,28 @@ class Dropzone extends AbstractResource
     {
         return $this->username;
     }
+
+    /**
+     * Set evaluationType
+     *
+     * @param string $evaluationType
+     *
+     * @return Dropzone
+     */
+    public function setEvaluationType($evaluationType)
+    {
+        $this->evaluationType = $evaluationType;
+
+        return $this;
+    }
+
+    /**
+     * Get evaluationType
+     *
+     * @return string
+     */
+    public function getEvaluationType()
+    {
+        return $this->evaluationType;
+    }
 }
