@@ -146,6 +146,18 @@ class DropzoneCommonType extends AbstractType
                  array(
                      'required' => false)
                       )
+
+            // EvaluationType. Ajout de cette zone, demande JJQ. InnovaERV
+            ->add('evaluationType', 'choice', array(
+                'choices' => array(
+                    'noEvaluation' => 'noEvaluation',
+                    'notation' => 'notation',
+                    'ratingScale' => 'ratingScale',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+            ))
+
             ;
     }
     public function getName()

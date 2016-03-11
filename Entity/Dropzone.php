@@ -6,7 +6,8 @@
  * Modifiey by : Eric VINCENT InnovaERV Add ReturnReceipt Column
  * Modifiey by : Eric VINCENT InnovaERV Add Evaluation Column
  * Modifiey by : Eric VINCENT InnovaERV Add Username and Picture Column
- */
+ * Modifiey by : Eric VINCENT InnovaERV Add EvaluationType Column (02/02/2016)
+*/
 
 namespace Innova\CollecticielBundle\Entity;
 
@@ -30,6 +31,8 @@ class Dropzone extends AbstractResource
 
     const AUTO_CLOSED_STATE_WAITING = "waiting";
     const AUTO_CLOSED_STATE_CLOSED = "autoClosed";
+
+    const EVALUATION_TYPE = "noEvaluation";
 
     /**
      * 1 = common
@@ -271,6 +274,11 @@ class Dropzone extends AbstractResource
      * @ORM\Column(name="username",type="boolean",nullable=false,options={"default" = false})
      */
     protected $username = false;
+
+    /**
+     * @ORM\Column(name="evaluation_type", type="string", nullable=false, options={"default" = "noEvaluation"})
+     */
+    protected $evaluationType = self::EVALUATION_TYPE;
 
     /**
      * @var Event
