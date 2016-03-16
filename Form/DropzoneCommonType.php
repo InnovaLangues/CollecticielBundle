@@ -159,11 +159,10 @@ class DropzoneCommonType extends AbstractType
                 'multiple' => false,
             ))
 
+            // Notation maxi. Ajout de cette zone, demande JJQ. InnovaERV
             ->add('maximumNotation', 'text', array(
                           'required' => true)
                         )
-
-
 
             ;
     }
