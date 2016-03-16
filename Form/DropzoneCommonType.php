@@ -159,6 +159,12 @@ class DropzoneCommonType extends AbstractType
                 'multiple' => false,
             ))
 
+            ->add('maximumNotation', 'text', array(
+                          'required' => true)
+                        )
+
+
+
             ;
     }
     public function getName()

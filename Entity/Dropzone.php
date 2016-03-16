@@ -7,6 +7,7 @@
  * Modifiey by : Eric VINCENT InnovaERV Add Evaluation Column
  * Modifiey by : Eric VINCENT InnovaERV Add Username and Picture Column
  * Modifiey by : Eric VINCENT InnovaERV Add EvaluationType Column (02/02/2016)
+ * Modifiey by : Eric VINCENT InnovaERV Add MaximumNotation Column (16/03/2016)
 */
 
 namespace Innova\CollecticielBundle\Entity;
@@ -279,6 +280,11 @@ class Dropzone extends AbstractResource
      * @ORM\Column(name="evaluation_type", type="string", nullable=false, options={"default" = "noEvaluation"})
      */
     protected $evaluationType = self::EVALUATION_TYPE;
+
+    /**
+     * @ORM\Column(name="maximum_notation", type="smallint", nullable=false)
+     */
+    protected $maximumNotation = 0;
 
     /**
      * @var Event
@@ -1166,5 +1172,29 @@ class Dropzone extends AbstractResource
     public function getEvaluationType()
     {
         return $this->evaluationType;
+    }
+
+    /**
+     * Set maximumNotation
+     *
+     * @param integer $maximumNotation
+     *
+     * @return Dropzone
+     */
+    public function setMaximumNotation($maximumNotation)
+    {
+        $this->maximumNotation = $maximumNotation;
+
+        return $this;
+    }
+
+    /**
+     * Get maximumNotation
+     *
+     * @return integer
+     */
+    public function getMaximumNotation()
+    {
+        return $this->maximumNotation;
     }
 }
