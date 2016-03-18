@@ -143,7 +143,6 @@
         {# Evaluation gestion. Ajout de cette zone, demande JJQ. InnovaERV  #}
         <div id="evaluationType">
             <h4>{{ 'Evaluation for documents'|trans({}, 'innova_collecticiel') }}</h4>
-            <p>{{ 'Evaluation type'|trans({}, 'innova_collecticiel') }}</p>
 
             <div class="row form-group">
                 <div class="col-md-10">
@@ -169,6 +168,17 @@
                          ) }}
                      </div>
                  </div>
+
+                <h4>{{ 'Criterion information'|trans({}, 'innova_collecticiel') }}</h4>
+
+                <div class="col-md-8">
+                    <button type="button" id="add-criterion-button-innova2" class="btn btn-primary toto disabled-during-edition">{{ 'Add a new'|trans({}, 'innova_collecticiel') }}</button>
+{#
+                    <a class="btn btn-primary add-criterion-button-innova disabled-during-edition">
+                       <span class="fa fa-plus">{{ 'Add a new'|trans({}, 'innova_collecticiel') }}</span>
+                    </a>
+#}
+                </div>
             </div>
         </div>
 
@@ -420,6 +430,8 @@
             }
         }
     </script>
+
+    <script src="{{ asset('bundles/innovacollecticiel/js/popup.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}

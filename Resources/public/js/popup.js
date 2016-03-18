@@ -1,5 +1,73 @@
+$('#add-criterion-button-innova2').on('click', function(event) {
+alert("ici add-criterion-buttonA");
+
+
+        event.preventDefault();
+alert("ici add-criterion-buttonB");
+
+        $('.disabled-during-edition').attr('disabled', 'disabled');
+alert("ici add-criterion-buttonC");
+        tinyMCE.get('innova_collecticiel_criteria_form_correctionInstruction').getBody().setAttribute('contenteditable', false);
+alert("ici add-criterion-button1");
+        //$('.icap_dropzone_criteria_form_correctionInstruction').attr('disabled','disabled');
+        $('.criteria-form-button').attr('disabled', 'disabled');
+alert("ici add-criterion-button2");
+
+        var criterionId = $(this).data('criterion');
+alert("iciiiiiiiiii");
+        var $form = $('#global_form');
+        $('#addCriteriaReRouting').val('add-criterion');
+        $.ajax({
+            url: $form.attr('action'),
+            type: $form.attr('method'),
+            data: $form.serialize(),
+            success: function (data) {
+                console.log(data);
+                $.get($('.add-criterion-button').attr('href'))
+                    .done(function (data) {
+                        resetTiny();
+                        $('.new-criteria-zone').empty();
+                        $('.criterion-row > .criterion-edit').empty();
+
+                        $('.template > .template-criteria-zone').clone().appendTo('.new-criteria-zone');
+                        $('.new-criteria-zone .new-criteria-form').append(data);
+
+                        $('.column-input input').val(totalColumn);
+                        $('.comment-input input').val(comment);
+
+                        $('.add-criteria-zone').hide();
+                        $('.new-criteria').show();
+                        $('.new-criteria-zone > .template-criteria-zone').show();
+
+                        $('.new-criteria-zone > .template-criteria-zone .form-buttons').hide();
+
+                        $('.add-remove-column').show();
+                        initTinyMCE(stfalcon_tinymce_config);
+
+                        var top = $('#new-criteria').offset().top;
+                        top = top - 50;
+                        $('body,html').scrollTop(top);
+                        setSaveListener();
+                    })
+                ;
+
+            }
+        });
+
+
+
+    });
+
+
+
 $(document).ready(function () {
+
     'use strict';
+
+alert("eerr");
+    
+
+
 
     var modalNewForm = null;
 
