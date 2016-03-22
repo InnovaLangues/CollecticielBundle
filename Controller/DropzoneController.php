@@ -43,6 +43,9 @@ class DropzoneController extends DropzoneBaseController
      */
     public function editCommonAction(Dropzone $dropzone, $user)
     {
+var_dump("");
+var_dump("editCommonAction");
+var_dump("");
         $em                     = $this->getDoctrine()->getManager();
         $dropzoneVoter          = $this->get('innova.manager.dropzone_voter');
         $dropzoneManager        = $this->get('innova.manager.dropzone_manager');
@@ -117,6 +120,37 @@ class DropzoneController extends DropzoneBaseController
             $em->persist($dropzone);
             $em->flush();
 
+            $stayHere = $form->get('stayHere')->getData();
+var_dump("stayHere");
+var_dump($stayHere);
+
+
+                    if ($stayHere == 1) {
+                        if ($dropzone->hasCriteria() === false) {
+                            $request->getSession()->getFlashBag()->add(
+                                'warning',
+                                $this->get('translator')->trans('Warning your peer review offers no criteria on which to base correct copies', array(), 'icap_dropzone')
+                            );
+                        }
+
+                        $request->getSession()->getFlashBag()->add(
+                            'success',
+                            $this->get('translator')->trans('The evaluation has been successfully saved', array(), 'icap_dropzone')
+                        );
+                    } else {
+//                        die("iciiiiiiiiii stayhere=0");
+                        return $this->redirect(
+                            $this->generateUrl(
+                                'innova_collecticiel_edit_criteria',
+                                array(
+                                    'resourceId' => $dropzone->getId()
+                                )
+                            )
+                        );
+                    }
+
+
+
             // check if manual state has changed
 //            if ($manualStateChanged) {
 //                // send notification.
@@ -176,7 +210,9 @@ class DropzoneController extends DropzoneBaseController
     {
         $this->get('innova.manager.dropzone_voter')->isAllowToOpen($dropzone);
         $this->get('innova.manager.dropzone_voter')->isAllowToEdit($dropzone);
-
+var_dump("");
+var_dump("editCriteriaActionInnova");
+var_dump("");
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('InnovaCollecticielBundle:Criterion');
         $query = $repository
@@ -274,6 +310,10 @@ class DropzoneController extends DropzoneBaseController
             }
         }
 
+        $dropzoneVoter          = $this->get('innova.manager.dropzone_voter');
+        $dropzoneManager        = $this->get('innova.manager.dropzone_manager');
+
+        $collecticielOpenOrNot = $dropzoneManager->collecticielOpenOrNot($dropzone);
         $adminInnova = $dropzoneVoter->checkEditRight($dropzone);
     /*    if ($this->get('security.context')->isGranted('ROLE_ADMIN' === true)) {
             $adminInnova = true;
@@ -288,6 +328,7 @@ class DropzoneController extends DropzoneBaseController
             'nbCorrection' => $nbCorrection,
             'add_criteria_after' => $add_criteria_after,
             'adminInnova' => $adminInnova,
+            'collecticielOpenOrNot' => $collecticielOpenOrNot
         );
     }
 
