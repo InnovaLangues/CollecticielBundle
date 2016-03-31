@@ -64,7 +64,7 @@ $(document).ready(function () {
 
     'use strict';
 
-alert("eerr");
+//alert("eerr");
     
 
 
