@@ -183,6 +183,202 @@ var_dump($stayHere);
         );
     }
 
+
+
+
+
+   /**
+     * @Route(
+     *      "/{resourceId}/edit",
+     *      name="innova_collecticiel_edit",
+     *      requirements={"resourceId" = "\d+"}
+     * )
+     * @Route(
+     *      "/{resourceId}/edit/appreciation",
+     *      name="innova_collecticiel_edit_appreciation",
+     *      requirements={"resourceId" = "\d+"}
+     * )
+     * @ParamConverter("user", options={
+     *      "authenticatedUser" = true,
+     *      "messageEnabled" = true,
+     *      "messageTranslationKey" = "Participate in an evaluation requires authentication. Please login.",
+     *      "messageTranslationDomain" = "innova_collecticiel"
+     * })
+     * @ParamConverter("dropzone", class="InnovaCollecticielBundle:Dropzone", options={"id" = "resourceId"})
+     * @Template()
+     *
+     * User is needed for Agenda Event
+     */
+    public function editAppreciationAction(Dropzone $dropzone, $user)
+    {
+var_dump("");
+var_dump("editAppreciationAction");
+var_dump("");
+        $em                     = $this->getDoctrine()->getManager();
+        $dropzoneVoter          = $this->get('innova.manager.dropzone_voter');
+        $dropzoneManager        = $this->get('innova.manager.dropzone_manager');
+        $translator             = $this->get('translator');
+        $platformConfigHandler  = $this->get('claroline.config.platform_config_handler');
+
+        $dropzoneVoter->isAllowToOpen($dropzone);
+        $dropzoneVoter->isAllowToEdit($dropzone);
+        $dropzoneManager = $this->get('innova.manager.dropzone_manager');
+
+        if ($dropzone->getManualState() == 'notStarted') {
+            $dropzone->setManualState("allowDrop");
+            $em->persist($dropzone);
+            $em->flush();
+        }
+
+        $form = $this->createForm(
+            new DropzoneCommonType(), $dropzone,
+            array('language' => $platformConfigHandler->getParameter('locale_language'), 'date_format' => 'dd/MM/yyyy')
+        );
+
+        if ($this->getRequest()->isMethod('POST')) {
+            // see if manual planification option has changed.
+            $oldManualPlanning = $dropzone->getManualPlanning();
+            $oldManualPlanningOption = $dropzone->getManualState();
+
+            $form->handleRequest($this->getRequest());
+
+            // Mise à jour de la publication dans la table "claro_resource_node"
+            $resourceId = $dropzone->getResourceNode()->getId();
+            $resourceNodes = $dropzoneManager->updatePublished($resourceId, $form->get('published')->getData());
+
+            $dropzone = $form->getData();
+            $form = $this->handleFormErrors($form, $dropzone);
+
+            if ($dropzone->getEditionState() < 2) {
+                $dropzone->setEditionState(2);
+            }
+
+            // handle events (delete if needed, create & update)
+            $dropzone = $dropzoneManager->handleEvents($dropzone, $user);
+
+            $manualStateChanged = false;
+            $newManualState = null;
+            if ($dropzone->getManualPlanning() === true) {
+                if ($oldManualPlanning === false || $oldManualPlanningOption != $dropzone->getManualState()) {
+                    $manualStateChanged = true;
+                    $newManualState = $dropzone->getManualState();
+                }
+            }
+
+            $unitOfWork = $em->getUnitOfWork();
+            $unitOfWork->computeChangeSets();
+            $changeSet = $unitOfWork->getEntityChangeSet($dropzone);
+
+            $em = $this->getDoctrine()->getManager();
+
+            // InnovaERV : ici, on a changé l'état du collecticiel.
+            // InnovaERV : j'ajoute une notification.
+            // InnovaERV : #171 Bug : lors de la création d'un collecticiel et de la notification
+            if (count($dropzone->getDrops()) > 0)
+            {
+                if ($oldManualPlanningOption != $dropzone->getManualState())
+                {
+                    // send notification.
+                    $usersIds = $dropzoneManager->getDropzoneUsersIds($dropzone);
+                    $event = new LogDropzoneManualStateChangedEvent($dropzone, $dropzone->getManualState(), $usersIds);
+                    $this->get('event_dispatcher')->dispatch('log', $event);
+                }
+            }
+
+            $em->persist($dropzone);
+            $em->flush();
+
+            $stayHere = $form->get('stayHere')->getData();
+var_dump("stayHere");
+var_dump($stayHere);
+
+
+                    if ($stayHere == 1) {
+                        if ($dropzone->hasCriteria() === false) {
+                            $request->getSession()->getFlashBag()->add(
+                                'warning',
+                                $this->get('translator')->trans('Warning your peer review offers no criteria on which to base correct copies', array(), 'icap_dropzone')
+                            );
+                        }
+
+                        $request->getSession()->getFlashBag()->add(
+                            'success',
+                            $this->get('translator')->trans('The evaluation has been successfully saved', array(), 'icap_dropzone')
+                        );
+                    } else {
+//                        die("iciiiiiiiiii stayhere=0");
+                        return $this->redirect(
+                            $this->generateUrl(
+                                'innova_collecticiel_edit_criteria',
+                                array(
+                                    'resourceId' => $dropzone->getId()
+                                )
+                            )
+                        );
+                    }
+
+
+
+            // check if manual state has changed
+//            if ($manualStateChanged) {
+//                // send notification.
+//                $usersIds = $dropzoneManager->getDropzoneUsersIds($dropzone);
+//                $event = new LogDropzoneManualStateChangedEvent($dropzone, $newManualState, $usersIds);
+//                $this->get('event_dispatcher')->dispatch('log', $event);
+//            }
+
+            $event = new LogDropzoneConfigureEvent($dropzone, $changeSet);
+            $this->dispatch($event);
+
+            $this->getRequest()->getSession()->getFlashBag()->add('success', $translator->trans('The collecticiel has been successfully saved', array(), 'innova_collecticiel'));
+        }
+
+        $adminInnova = false;
+        if ($dropzoneVoter->checkEditRight($dropzone)
+        && $this->get('security.token_storage')->getToken()->getUser()->getId() == $user->getId()) {
+            $adminInnova = true;
+        }
+    
+        $collecticielOpenOrNot = $dropzoneManager->collecticielOpenOrNot($dropzone);
+
+        return array(
+            'workspace' => $dropzone->getResourceNode()->getWorkspace(),
+            '_resource' => $dropzone,
+            'dropzone' => $dropzone,
+            'form' => $form->createView(),
+            'adminInnova' => $adminInnova,
+            'collecticielOpenOrNot' => $collecticielOpenOrNot
+        );
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * @Route(
      *      "/{resourceId}/edit/criteria",
