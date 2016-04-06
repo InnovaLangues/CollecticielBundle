@@ -8,6 +8,7 @@
  * Modifiey by : Eric VINCENT InnovaERV Add Username and Picture Column
  * Modifiey by : Eric VINCENT InnovaERV Add EvaluationType Column (02/02/2016)
  * Modifiey by : Eric VINCENT InnovaERV Add MaximumNotation Column (16/03/2016)
+ * Modifiey by : Eric VINCENT InnovaERV Add ArrayCollection GradingScale (04/2016)
 */
 
 namespace Innova\CollecticielBundle\Entity;
@@ -309,9 +310,9 @@ class Dropzone extends AbstractResource
 
     public function __construct()
     {
+        $this->gradingScales = new ArrayCollection();
         $this->drops = new ArrayCollection();
         $this->peerReviewCriteria = new ArrayCollection();
-        $this->gradingScales = new ArrayCollection();
     }
 
     /**
