@@ -40,7 +40,10 @@
 
         <h3>{{ 'Evaluation Appreciation'|trans({}, 'innova_collecticiel') }}</h3>
 
-        <ul class="tags" data-prototype="&lt;div&gt;&lt;label class=&quot; required&quot;&gt;__name__&lt;/label&gt;&lt;div id=&quot;task_tags___name__&quot;&gt;&lt;div&gt;&lt;label for=&quot;task_tags___name___name&quot; class=&quot; required&quot;&gt;&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;task_tags___name___name&quot; name=&quot;task[tags][__name__][name]&quot; required=&quot;required&quot; maxlength=&quot;255&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;">
+        <ul class="tags" data-prototype="{{ form_widget(form.gradingScales.vars.prototype)|e }}">
+            {% for scale in form.gradingScales %}
+                {{ form_row(scale.scaleName) }}
+            {% endfor %}
         </ul>
 
         <h3>{{ 'ratingScale'|trans({}, 'innova_collecticiel') }}</h3>

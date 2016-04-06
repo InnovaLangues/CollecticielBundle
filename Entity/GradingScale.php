@@ -6,8 +6,8 @@
 
 namespace Innova\CollecticielBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Innova\CollecticielBundle\Repository\GradingScaleRepository")
@@ -31,7 +31,8 @@ class GradingScale {
     */
     /**
      * @ORM\ManyToOne(
-     *      targetEntity="Innova\CollecticielBundle\Entity\Dropzone"
+     *      targetEntity="Innova\CollecticielBundle\Entity\Dropzone",
+     *      inversedBy="gradingScales"
      * )
      * @ORM\JoinColumn(name="dropzone_id", referencedColumnName="id", nullable=false)
      */

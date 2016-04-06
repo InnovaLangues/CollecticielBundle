@@ -308,6 +308,16 @@ class Dropzone extends AbstractResource
      */
     protected $eventCorrection = null;
 
+    /**
+     * @ORM\OneToMany(
+     *     targetEntity="Innova\CollecticielBundle\Entity\GradingScale",
+     *     mappedBy="dropzone",
+     *     cascade={"persist"}
+     * )
+     */
+    public $gradingScales;
+
+
     public function __construct()
     {
         $this->gradingScales = new ArrayCollection();
@@ -1198,5 +1208,39 @@ class Dropzone extends AbstractResource
     public function getMaximumNotation()
     {
         return $this->maximumNotation;
+    }
+
+    /**
+     * Add gradingScale
+     *
+     * @param \Innova\CollecticielBundle\Entity\GradingScale $gradingScale
+     *
+     * @return Dropzone
+     */
+    public function addGradingScale(\Innova\CollecticielBundle\Entity\GradingScale $gradingScale)
+    {
+        $this->gradingScales[] = $gradingScale;
+
+        return $this;
+    }
+
+    /**
+     * Remove gradingScale
+     *
+     * @param \Innova\CollecticielBundle\Entity\GradingScale $gradingScale
+     */
+    public function removeGradingScale(\Innova\CollecticielBundle\Entity\GradingScale $gradingScale)
+    {
+        $this->gradingScales->removeElement($gradingScale);
+    }
+
+    /**
+     * Get gradingScales
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGradingScales()
+    {
+        return $this->gradingScales;
     }
 }

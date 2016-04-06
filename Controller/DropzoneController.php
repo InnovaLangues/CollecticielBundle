@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Innova\CollecticielBundle\Form\DropzoneAppreciationType;
 
 class DropzoneController extends DropzoneBaseController
 {
@@ -231,8 +232,7 @@ var_dump("");
         }
 
         $form = $this->createForm(
-            new DropzoneAppreciationType(), $dropzone,
-            array('language' => $platformConfigHandler->getParameter('locale_language'), 'date_format' => 'dd/MM/yyyy')
+            new DropzoneAppreciationType(), $dropzone
         );
 
         if ($this->getRequest()->isMethod('POST')) {
