@@ -169,3 +169,16 @@ input.form-control {
 .blackLink {
   color:black;  
 }
+
+
+
+
+
+
+li *{
+    display:inline-block;
+    margin:0 10px;
+}
+
+
+

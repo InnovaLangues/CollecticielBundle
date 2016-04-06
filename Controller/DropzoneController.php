@@ -231,7 +231,7 @@ var_dump("");
         }
 
         $form = $this->createForm(
-            new DropzoneCommonType(), $dropzone,
+            new DropzoneAppreciationType(), $dropzone,
             array('language' => $platformConfigHandler->getParameter('locale_language'), 'date_format' => 'dd/MM/yyyy')
         );
 

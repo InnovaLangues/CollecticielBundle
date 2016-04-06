@@ -7,6 +7,7 @@
 namespace Innova\CollecticielBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="Innova\CollecticielBundle\Repository\GradingScaleRepository")
@@ -35,7 +36,6 @@ class GradingScale {
      * @ORM\JoinColumn(name="dropzone_id", referencedColumnName="id", nullable=false)
      */
     protected $dropzone;
-
 
     /**
      * Get id

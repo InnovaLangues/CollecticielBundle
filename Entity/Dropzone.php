@@ -311,6 +311,7 @@ class Dropzone extends AbstractResource
     {
         $this->drops = new ArrayCollection();
         $this->peerReviewCriteria = new ArrayCollection();
+        $this->gradingScales = new ArrayCollection();
     }
 
     /**
