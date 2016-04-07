@@ -9,7 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class GradingScaleType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
@@ -17,6 +16,7 @@ class GradingScaleType extends AbstractType
             ->add('scaleName', 'text',
                 array(
                     'required' => true,
+                    'label' => false,
                     )
                 )
             ;

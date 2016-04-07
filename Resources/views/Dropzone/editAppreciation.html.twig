@@ -37,16 +37,23 @@
             </div>
         </div>
 
-
         <h3>{{ 'Evaluation Appreciation'|trans({}, 'innova_collecticiel') }}</h3>
 
-        <ul class="tags" data-prototype="{{ form_widget(form.gradingScales.vars.prototype)|e }}">
+        <h3>{{ 'ratingScale'|trans({}, 'innova_collecticiel') }}</h3>
+
+        <ul class="tags" data-prototype="{{ _self.gradingScale_prototype(form.gradingScales.vars.prototype)|e }}">
+            {% set count = (form.gradingScales|length)+1 %}
+
+            {# Affichage des données de la base #}
             {% for scale in form.gradingScales %}
-                {{ form_row(scale.scaleName) }}
+                {{ _self.gradingScale_prototype(scale) }}
+            {% endfor %}
+
+            {# Il faut afficher au moins 3 lignes #}
+            {% for i in count..3 %}
+                {{ _self.gradingScale_prototype(form.gradingScales.vars.prototype) }}
             {% endfor %}
         </ul>
-
-        <h3>{{ 'ratingScale'|trans({}, 'innova_collecticiel') }}</h3>
 
         <h4>{{ 'Very good'|trans({}, 'innova_collecticiel') }}</h4>
         <h4>{{ 'Good'|trans({}, 'innova_collecticiel') }}</h4>
@@ -61,7 +68,6 @@
         <button id="submitAndGotoCriteriaButton" type="submit" class="btn btn-primary">
         {{ 'Add a new'|trans({}, 'innova_collecticiel') }}
         </button>
-
 
 {#
     {% if nbCorrection > 0 %}
@@ -81,8 +87,6 @@
                 </div>
 
             </div>
-
-     
 
             {{ form_rest(form) }}
             <div class="row">
@@ -120,6 +124,14 @@
     </div>
 
 {% endblock %}
+
+{% macro gradingScale_prototype(gradingScale) %}
+    <div class="row">
+        <div class="col-md-8">
+            {{ form_row(gradingScale.scaleName) }}
+        </div>
+    </div>
+{% endmacro %}
 
 {% block stylesheets %}
     {{ parent() }}

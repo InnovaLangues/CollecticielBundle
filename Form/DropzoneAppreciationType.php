@@ -9,7 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class DropzoneAppreciationType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 

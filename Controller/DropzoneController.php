@@ -231,9 +231,7 @@ var_dump("");
             $em->flush();
         }
 
-        $form = $this->createForm(
-            new DropzoneAppreciationType(), $dropzone
-        );
+        $form = $this->createForm(new DropzoneAppreciationType(), $dropzone);
 
         if ($this->getRequest()->isMethod('POST')) {
             // see if manual planification option has changed.

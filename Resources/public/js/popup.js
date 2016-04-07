@@ -54,8 +54,6 @@ alert("iciiiiiiiiii");
             }
         });
 
-
-
     });
 
 
@@ -65,9 +63,8 @@ $(document).ready(function () {
     'use strict';
 
     // BEGIN ADD LINK
-
     // setup an "add a tag" link
-    var $addTagLink = $('<a href="#" class="add_tag_link">Add a tag</a>');
+    var $addTagLink = $('<a href="#" class="add_tag_link">Degré d\'appréciation</a>');
     var $newLinkLi = $('<li></li>').append($addTagLink);
 
     // Get the ul that holds the collection of tags
@@ -79,7 +76,18 @@ $(document).ready(function () {
     // count the current form inputs we have (e.g. 2), use that as the new
     // index when inserting a new item (e.g. 2)
     $collectionHolder.data('index', $collectionHolder.find(':input').length);
-    
+
+    var $nb = $collectionHolder.find(':input').length;
+
+    // we must have at least 3 grading scales
+    if ($nb < 3) {
+        var i = $nb;
+        for (; i < 3; i++) {
+        addTagForm($collectionHolder, $newLinkLi);
+        }
+    }
+
+
     $addTagLink.on('click', function(e) {
         // prevent the link from creating a "#" on the URL
         e.preventDefault();
