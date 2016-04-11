@@ -49,6 +49,14 @@ class GradingScale {
     }
 
     /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+    
+    /**
      * Set scaleName
      *
      * @param string $scaleName

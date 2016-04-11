@@ -19,8 +19,7 @@ class GradingScaleType extends AbstractType
                     'label' => false,
                     )
                 )
-            ->add('id', 'hidden', array('mapped' => false))
-
+            ->add('id', 'hidden')
             ;
     }
 

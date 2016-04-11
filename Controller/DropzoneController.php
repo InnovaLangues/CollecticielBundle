@@ -247,17 +247,20 @@ $tab = $this->getRequest()->request->get('innova_collecticiel_appreciation_form'
 
 $countCorrection = count($tab["gradingScales"])-1;
 
-echo $countCorrection;
+//echo $countCorrection;
 
 for ($indice = 0; $indice<=$countCorrection; $indice++) {
-var_dump("<br />");
-var_dump($indice);
-var_dump($tab["gradingScales"][$indice]["scaleName"]);
-var_dump($tab["gradingScales"][$indice]["id"]);
+//var_dump("<br />");
+//var_dump($indice);
+//var_dump($tab["gradingScales"][$indice]["scaleName"]);
+//var_dump($tab["gradingScales"][$indice]["id"]);
 }
 
 
-            $update = $gradingScaleManager->updateGradingScales($tab["gradingScales"], $dropzone);
+var_dump($this->getRequest()->request->all());
+
+
+            $update = $gradingScaleManager->manageGradingScales($tab["gradingScales"], $dropzone);
 
 echo "<br /> en retour du manager ";
 

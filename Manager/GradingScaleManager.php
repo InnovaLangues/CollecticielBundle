@@ -57,32 +57,62 @@ class GradingScaleManager
      * @param tab
      * @return boolean
      */
-    public function updateGradingScales($tab, Dropzone $dropzone)
+    public function manageGradingScales($tab, Dropzone $dropzone)
     {
 
-        $countCorrection = count($tab)-1;
+        $countCorrection = count($tab);
 
+
+$keys = array_keys($tab);
         echo $countCorrection;
 
-        for ($indice = 0; $indice<=$countCorrection; $indice++) {
-            var_dump($indice);
-            var_dump($tab[$indice]["scaleName"]);
-            var_dump($tab[$indice]["id"]);
-            $gradingScales = $this->gradingScaleRepo->findBy(
-                array(
-                'dropzone' => $dropzone->getId(),
-                'scaleName' => $tab[$indice]["scaleName"]
-                )
-            );
-            if (count($gradingScales) == 0) {
-                echo "<br />pas trouvé";
-                var_dump($tab[$indice]["scaleName"]);
-                $this->insertGradingScale($tab[$indice]["scaleName"], $dropzone);
+  foreach (array_keys($tab) as $key) {
+echo "<br />--------------<br />";
+echo $key;
+echo $tab[$key]["scaleName"] . "-";
+echo $tab[$key]["id"] . "-";
+echo "<br />--------------<br />";
+}
+echo "<br />--------------<br />";
+        for ($indice = 0; $indice<$countCorrection; $indice++) {
+}
+die();
+        for ($indice = 0; $indice<$countCorrection; $indice++) {
+            echo "<br />";
+            echo $indice . "-";
+            echo $tab[$indice]["scaleName"] . "-";
+
+            echo $tab[$indice]["scaleName"] . "-";
+            echo $tab[$indice]["id"] . "-";
+
+
+// echo "<br />OK";
+// if (!isset($tab[$indice]["id"])) {
+//             echo $tab[$indice]["id"] . "-";
+// }
+// else {
+// echo "<br />KO";
+// }
+
+
+            if (!isset($tab[$indice]["id"])) {
+//                $gradingScale = $this->gradingScaleRepo->find($tab[$indice]["id"]);
+//                if (count($gradingScale) == 0) {
+                    echo "<br />pas trouvé";
+                    echo "<br />" . $tab[$indice]["scaleName"];
+//                    $this->insertGradingScale($tab[$indice]["scaleName"], $dropzone);
             }
-            else {
-                echo "<br />trouvé";
-                var_dump($tab[$indice]["scaleName"]);
+            else
+            {
+                $gradingScale = $this->gradingScaleRepo->find($tab[$indice]["id"]);
+                    echo "<br />trouvé";
+                    echo "<br />" . $gradingScale->getScaleName();
+                    echo "<br />" . $tab[$indice]["scaleName"];
+//                    if ($tab[$indice]["scaleName"] != $gradingScale->getScaleName()) {
+                        $this->updateGradingScale($tab[$indice]["scaleName"], $gradingScale);
+//                    }
             }
+
         }
 
 /*
@@ -98,7 +128,7 @@ class GradingScaleManager
     }
 
     /**
-     *  To update gradingScale table
+     *  To insert gradingScale table
      *
      * @param scaleName
      * @param Dropzone
@@ -125,6 +155,27 @@ echo $gradingScale->getScaleName();
         $this->em->persist($gradingScale);
         $this->em->flush();
         $this->em->refresh($gradingScale);
+
+    }
+
+    /**
+     *  To update gradingScale table
+     *
+     * @param scaleName
+     * @param Dropzone
+     * @return boolean
+     */
+    public function updateGradingScale($scaleName, GradingScale $gradingScale)
+    {
+
+echo "<br />suis dans Update";
+        echo "<br />scaleName : " . $scaleName;
+        echo "<br />getScaleName :" . $gradingScale->getScaleName();
+        // update an existing grading Scale
+        $gradingScale->setScaleName($scaleName);
+
+        $this->em->persist($gradingScale);
+        $this->em->flush();
 
     }
 
