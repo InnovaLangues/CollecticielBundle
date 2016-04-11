@@ -34,7 +34,7 @@ class GradingScale {
      *      targetEntity="Innova\CollecticielBundle\Entity\Dropzone",
      *      inversedBy="gradingScales"
      * )
-     * @ORM\JoinColumn(name="dropzone_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="dropzone_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     protected $dropzone;
 

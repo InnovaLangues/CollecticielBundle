@@ -224,6 +224,7 @@ var_dump("");
         $dropzoneVoter->isAllowToOpen($dropzone);
         $dropzoneVoter->isAllowToEdit($dropzone);
         $dropzoneManager = $this->get('innova.manager.dropzone_manager');
+        $gradingScaleManager = $this->get('innova.manager.gradingscale_manager');
 
         if ($dropzone->getManualState() == 'notStarted') {
             $dropzone->setManualState("allowDrop");
@@ -234,18 +235,45 @@ var_dump("");
         $form = $this->createForm(new DropzoneAppreciationType(), $dropzone);
 
         if ($this->getRequest()->isMethod('POST')) {
+
+            $form->handleRequest($this->getRequest());
+
+            $dropzone = $form->getData();
+            $form = $this->handleFormErrors($form, $dropzone);
+
+            var_dump("suis dans POST editAppreciationAction");
+//            var_dump($this->getRequest()->request->all());
+$tab = $this->getRequest()->request->get('innova_collecticiel_appreciation_form');
+
+$countCorrection = count($tab["gradingScales"])-1;
+
+echo $countCorrection;
+
+for ($indice = 0; $indice<=$countCorrection; $indice++) {
+var_dump("<br />");
+var_dump($indice);
+var_dump($tab["gradingScales"][$indice]["scaleName"]);
+var_dump($tab["gradingScales"][$indice]["id"]);
+}
+
+
+            $update = $gradingScaleManager->updateGradingScales($tab["gradingScales"], $dropzone);
+
+echo "<br /> en retour du manager ";
+
+//            var_dump($this->getRequest()->request->addCriteria[]);
+
+            die();
+
             // see if manual planification option has changed.
             $oldManualPlanning = $dropzone->getManualPlanning();
             $oldManualPlanningOption = $dropzone->getManualState();
 
-            $form->handleRequest($this->getRequest());
 
             // Mise à jour de la publication dans la table "claro_resource_node"
             $resourceId = $dropzone->getResourceNode()->getId();
             $resourceNodes = $dropzoneManager->updatePublished($resourceId, $form->get('published')->getData());
 
-            $dropzone = $form->getData();
-            $form = $this->handleFormErrors($form, $dropzone);
 
             if ($dropzone->getEditionState() < 2) {
                 $dropzone->setEditionState(2);

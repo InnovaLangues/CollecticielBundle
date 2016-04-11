@@ -87,7 +87,6 @@ $(document).ready(function () {
         }
     }
 
-
     $addTagLink.on('click', function(e) {
         // prevent the link from creating a "#" on the URL
         e.preventDefault();

@@ -312,7 +312,8 @@ class Dropzone extends AbstractResource
      * @ORM\OneToMany(
      *     targetEntity="Innova\CollecticielBundle\Entity\GradingScale",
      *     mappedBy="dropzone",
-     *     cascade={"persist"}
+     *     cascade={"all"},
+     *     orphanRemoval=true
      * )
      */
     public $gradingScales;
