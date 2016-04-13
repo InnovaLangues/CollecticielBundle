@@ -18,6 +18,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Innova\CollecticielBundle\Form\DropzoneAppreciationType;
 
+use Innova\CollecticielBundle\Entity\GradingScale;
+
 class DropzoneController extends DropzoneBaseController
 {
     /**
@@ -243,30 +245,34 @@ var_dump("");
 
             var_dump("suis dans POST editAppreciationAction");
 //            var_dump($this->getRequest()->request->all());
-$tab = $this->getRequest()->request->get('innova_collecticiel_appreciation_form');
+            $tab = $this->getRequest()->request->get('innova_collecticiel_appreciation_form');
 
-$countCorrection = count($tab["gradingScales"])-1;
-
-//echo $countCorrection;
-
-for ($indice = 0; $indice<=$countCorrection; $indice++) {
-//var_dump("<br />");
-//var_dump($indice);
-//var_dump($tab["gradingScales"][$indice]["scaleName"]);
-//var_dump($tab["gradingScales"][$indice]["id"]);
-}
+//            $manageGradingScales = $this->manageGradingScales($tab["gradingScales"], $dropzone);
 
 
-var_dump($this->getRequest()->request->all());
+echo "<br /> en retour du managerrrrrrrrrrr ";
 
 
-            $update = $gradingScaleManager->manageGradingScales($tab["gradingScales"], $dropzone);
+        // Add a new grading Scale
+//        $scaleName = "titi2";
+        $gradingScale = new GradingScale();
+echo "<br /> en retour du manager1 ";
+        $gradingScale->setScaleName("titi");
+echo "<br /> en retour du manager2 ";
+        $gradingScale->setDropzone($dropzone);
+echo "<br /> en retour du manager3 ";
 
-echo "<br /> en retour du manager ";
+        $em->persist($gradingScale);
+echo "<br /> en retour du manager4 ";
+echo $gradingScale->getScaleName();
+echo $gradingScale->getDropzone();
 
-//            var_dump($this->getRequest()->request->addCriteria[]);
+//        $em->flush();
+echo "<br /> en retour du manager5 ";
+
 
             die();
+
 
             // see if manual planification option has changed.
             $oldManualPlanning = $dropzone->getManualPlanning();
@@ -647,4 +653,100 @@ var_dump("");
 
         return $form;
     }
+
+
+
+
+    /**
+     *  To update gradingScale table
+     *
+     * @param tab
+     * @return boolean
+     */
+    public function manageGradingScales($tab, Dropzone $dropzone)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $this->gradingScaleRepo = $em->getRepository('InnovaCollecticielBundle:GradingScale');
+
+        foreach (array_keys($tab) as $key) {
+            if (empty($tab[$key]["id"])) {
+                echo "<br /> Pas trouvé ";
+                echo "<br />" . $key;
+                $gradingScaleData = $this->insertGradingScale($tab[$key]["scaleName"], $dropzone);
+            }
+            else
+            {
+                echo "<br /> Trouvé" ;
+                echo "<br />" . $tab[$key]["id"];
+                echo "<br />" . $tab[$key]["scaleName"];
+                $gradingScale = $this->gradingScaleRepo->find($tab[$key]["id"]);
+                $gradingScaleData = $this->updateGradingScale($tab[$key]["scaleName"], $gradingScale);
+            }
+
+            //$em->persist($dropzone);
+            $em->persist($gradingScaleData);
+        }
+
+echo "<br />--------------<br />";
+
+        $em->flush();
+
+        return true;
+    }
+
+    /**
+     *  To insert gradingScale table
+     *
+     * @param scaleName
+     * @param Dropzone
+     * @return gradingScale
+     */
+    public function insertGradingScale($scaleName, Dropzone $dropzone)
+    {
+echo "<br />";
+echo "--- Dropzone : " . $dropzone->getId() . "---";
+echo "<br />";
+
+        // Add a new grading Scale
+        $gradingScale = new GradingScale();
+        $gradingScale->setScaleName($scaleName);
+        $gradingScale->setDropzone($dropzone);
+
+        return $gradingScale;
+
+    }
+
+    /**
+     *  To update gradingScale table
+     *
+     * @param scaleName
+     * @param Dropzone
+     * @return gradingScale
+     */
+    public function updateGradingScale($scaleName, GradingScale $gradingScale)
+    {
+        // update an existing grading Scale
+        $gradingScale->setScaleName($scaleName);
+
+        return $gradingScale;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -309,6 +309,8 @@ class Dropzone extends AbstractResource
     protected $eventCorrection = null;
 
     /**
+     * @var ArrayCollection
+     *
      * @ORM\OneToMany(
      *     targetEntity="Innova\CollecticielBundle\Entity\GradingScale",
      *     mappedBy="dropzone",
@@ -317,7 +319,6 @@ class Dropzone extends AbstractResource
      * )
      */
     public $gradingScales;
-
 
     public function __construct()
     {
@@ -1220,7 +1221,7 @@ class Dropzone extends AbstractResource
      */
     public function addGradingScale(\Innova\CollecticielBundle\Entity\GradingScale $gradingScale)
     {
-        $this->gradingScales[] = $gradingScale;
+        $this->gradingScales->add($gradingScale);
 
         return $this;
     }
@@ -1244,4 +1245,24 @@ class Dropzone extends AbstractResource
     {
         return $this->gradingScales;
     }
+
+    /**
+     * @param mixed $gradingscales
+     */
+    public function setGradingScales($gradingScales)
+    {
+        $this->gradingScales = $gradingScales;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }

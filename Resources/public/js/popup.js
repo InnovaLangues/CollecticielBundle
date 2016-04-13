@@ -1,20 +1,13 @@
 $('#add-criterion-button-innova2').on('click', function(event) {
-alert("ici add-criterion-buttonA");
-
 
         event.preventDefault();
-alert("ici add-criterion-buttonB");
 
         $('.disabled-during-edition').attr('disabled', 'disabled');
-alert("ici add-criterion-buttonC");
         tinyMCE.get('innova_collecticiel_criteria_form_correctionInstruction').getBody().setAttribute('contenteditable', false);
-alert("ici add-criterion-button1");
         //$('.icap_dropzone_criteria_form_correctionInstruction').attr('disabled','disabled');
         $('.criteria-form-button').attr('disabled', 'disabled');
-alert("ici add-criterion-button2");
 
         var criterionId = $(this).data('criterion');
-alert("iciiiiiiiiii");
         var $form = $('#global_form');
         $('#addCriteriaReRouting').val('add-criterion');
         $.ajax({
@@ -54,8 +47,7 @@ alert("iciiiiiiiiii");
             }
         });
 
-    });
-
+});
 
 
 $(document).ready(function () {

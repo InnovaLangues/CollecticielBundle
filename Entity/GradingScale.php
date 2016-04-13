@@ -81,24 +81,21 @@ class GradingScale {
     }
 
     /**
-     * Set dropzone
-     *
-     * @param \Innova\CollecticielBundle\Entity\Dropzone $dropzone
-     *
-     * @return GradingScale
+     * @param Dropzone $dropzone
      */
-    public function setDropzone(\Innova\CollecticielBundle\Entity\Dropzone $dropzone)
+    public function setDropzone($dropzone)
     {
         $this->dropzone = $dropzone;
+
+        $dropzone->addGradingScale($this);
 
         return $this;
     }
 
     /**
-     * Get dropzone
-     *
-     * @return \Innova\CollecticielBundle\Entity\Dropzone
+     * @return Dropzone
      */
+
     public function getDropzone()
     {
         return $this->dropzone;
