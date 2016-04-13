@@ -87,7 +87,7 @@ class GradingScale {
     {
         $this->dropzone = $dropzone;
 
-        $dropzone->addGradingScale($this);
+//        $dropzone->addGradingScale($this);
 
         return $this;
     }
@@ -100,4 +100,10 @@ class GradingScale {
     {
         return $this->dropzone;
     }
+
+public function __toString()
+{
+    return $this->dropzone();
+}
+    
 }

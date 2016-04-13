@@ -238,51 +238,19 @@ var_dump("");
 
         if ($this->getRequest()->isMethod('POST')) {
 
-            $form->handleRequest($this->getRequest());
-
-            $dropzone = $form->getData();
-            $form = $this->handleFormErrors($form, $dropzone);
-
-            var_dump("suis dans POST editAppreciationAction");
-//            var_dump($this->getRequest()->request->all());
             $tab = $this->getRequest()->request->get('innova_collecticiel_appreciation_form');
+            $manageGradingScales = $gradingScaleManager->manageGradingScales($tab["gradingScales"], $dropzone);
 
-//            $manageGradingScales = $this->manageGradingScales($tab["gradingScales"], $dropzone);
+//            $form->handleRequest($this->getRequest());
 
+//            $dropzone = $form->getData();
+//            $form = $this->handleFormErrors($form, $dropzone);
 
-echo "<br /> en retour du managerrrrrrrrrrr ";
-
-
-        // Add a new grading Scale
-//        $scaleName = "titi2";
-        $gradingScale = new GradingScale();
-echo "<br /> en retour du manager1 ";
-        $gradingScale->setScaleName("titi");
-echo "<br /> en retour du manager2 ";
-        $gradingScale->setDropzone($dropzone);
-echo "<br /> en retour du manager3 ";
-
-        $em->persist($gradingScale);
-echo "<br /> en retour du manager4 ";
-echo $gradingScale->getScaleName();
-echo $gradingScale->getDropzone();
-
-//        $em->flush();
-echo "<br /> en retour du manager5 ";
-
-
-            die();
-
+//            var_dump($this->getRequest()->request->all());
 
             // see if manual planification option has changed.
             $oldManualPlanning = $dropzone->getManualPlanning();
             $oldManualPlanningOption = $dropzone->getManualState();
-
-
-            // Mise à jour de la publication dans la table "claro_resource_node"
-            $resourceId = $dropzone->getResourceNode()->getId();
-            $resourceNodes = $dropzoneManager->updatePublished($resourceId, $form->get('published')->getData());
-
 
             if ($dropzone->getEditionState() < 2) {
                 $dropzone->setEditionState(2);
@@ -319,40 +287,6 @@ echo "<br /> en retour du manager5 ";
                     $this->get('event_dispatcher')->dispatch('log', $event);
                 }
             }
-
-            $em->persist($dropzone);
-            $em->flush();
-
-            $stayHere = $form->get('stayHere')->getData();
-var_dump("stayHere");
-var_dump($stayHere);
-
-
-                    if ($stayHere == 1) {
-                        if ($dropzone->hasCriteria() === false) {
-                            $request->getSession()->getFlashBag()->add(
-                                'warning',
-                                $this->get('translator')->trans('Warning your peer review offers no criteria on which to base correct copies', array(), 'icap_dropzone')
-                            );
-                        }
-
-                        $request->getSession()->getFlashBag()->add(
-                            'success',
-                            $this->get('translator')->trans('The evaluation has been successfully saved', array(), 'icap_dropzone')
-                        );
-                    } else {
-//                        die("iciiiiiiiiii stayhere=0");
-                        return $this->redirect(
-                            $this->generateUrl(
-                                'innova_collecticiel_edit_criteria',
-                                array(
-                                    'resourceId' => $dropzone->getId()
-                                )
-                            )
-                        );
-                    }
-
-
 
             // check if manual state has changed
 //            if ($manualStateChanged) {
@@ -653,100 +587,5 @@ var_dump("");
 
         return $form;
     }
-
-
-
-
-    /**
-     *  To update gradingScale table
-     *
-     * @param tab
-     * @return boolean
-     */
-    public function manageGradingScales($tab, Dropzone $dropzone)
-    {
-
-        $em = $this->getDoctrine()->getManager();
-
-        $this->gradingScaleRepo = $em->getRepository('InnovaCollecticielBundle:GradingScale');
-
-        foreach (array_keys($tab) as $key) {
-            if (empty($tab[$key]["id"])) {
-                echo "<br /> Pas trouvé ";
-                echo "<br />" . $key;
-                $gradingScaleData = $this->insertGradingScale($tab[$key]["scaleName"], $dropzone);
-            }
-            else
-            {
-                echo "<br /> Trouvé" ;
-                echo "<br />" . $tab[$key]["id"];
-                echo "<br />" . $tab[$key]["scaleName"];
-                $gradingScale = $this->gradingScaleRepo->find($tab[$key]["id"]);
-                $gradingScaleData = $this->updateGradingScale($tab[$key]["scaleName"], $gradingScale);
-            }
-
-            //$em->persist($dropzone);
-            $em->persist($gradingScaleData);
-        }
-
-echo "<br />--------------<br />";
-
-        $em->flush();
-
-        return true;
-    }
-
-    /**
-     *  To insert gradingScale table
-     *
-     * @param scaleName
-     * @param Dropzone
-     * @return gradingScale
-     */
-    public function insertGradingScale($scaleName, Dropzone $dropzone)
-    {
-echo "<br />";
-echo "--- Dropzone : " . $dropzone->getId() . "---";
-echo "<br />";
-
-        // Add a new grading Scale
-        $gradingScale = new GradingScale();
-        $gradingScale->setScaleName($scaleName);
-        $gradingScale->setDropzone($dropzone);
-
-        return $gradingScale;
-
-    }
-
-    /**
-     *  To update gradingScale table
-     *
-     * @param scaleName
-     * @param Dropzone
-     * @return gradingScale
-     */
-    public function updateGradingScale($scaleName, GradingScale $gradingScale)
-    {
-        // update an existing grading Scale
-        $gradingScale->setScaleName($scaleName);
-
-        return $gradingScale;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

@@ -40,15 +40,10 @@ class GradingScaleManager
 
         foreach (array_keys($tab) as $key) {
             if (empty($tab[$key]["id"])) {
-                echo "<br /> Pas trouvé ";
-                echo "<br />" . $key;
                 $gradingScaleData = $this->insertGradingScale($tab[$key]["scaleName"], $dropzone);
             }
             else
             {
-                echo "<br /> Trouvé" ;
-                echo "<br />" . $tab[$key]["id"];
-                echo "<br />" . $tab[$key]["scaleName"];
                 $gradingScale = $this->gradingScaleRepo->find($tab[$key]["id"]);
                 $gradingScaleData = $this->updateGradingScale($tab[$key]["scaleName"], $gradingScale);
             }
@@ -56,8 +51,6 @@ class GradingScaleManager
             //$em->persist($dropzone);
             $this->em->persist($gradingScaleData);
         }
-
-echo "<br />--------------<br />";
 
         $this->em->flush();
 
@@ -73,9 +66,6 @@ echo "<br />--------------<br />";
      */
     public function insertGradingScale($scaleName, Dropzone $dropzone)
     {
-echo "<br />";
-echo "--- Dropzone : " . $dropzone->getId() . "---";
-echo "<br />";
 
         // Add a new grading Scale
         $gradingScale = new GradingScale();

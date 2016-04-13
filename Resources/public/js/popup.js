@@ -75,7 +75,7 @@ $(document).ready(function () {
     if ($nb < 3) {
         var i = $nb;
         for (; i < 3; i++) {
-        addTagForm($collectionHolder, $newLinkLi);
+            addTagForm($collectionHolder, $newLinkLi);
         }
     }
 
@@ -105,7 +105,7 @@ $(document).ready(function () {
         var $newFormLi = $('<li></li>').append(newForm);
         
         // also add a remove button, just for this example
-        $newFormLi.append('<a href="#" class="remove-tag">x</a>');
+        $newFormLi.append('<a href="#" class="remove-tag">Suppression</a>');
         
         $newLinkLi.before($newFormLi);
         
