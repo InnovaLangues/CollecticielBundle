@@ -69,7 +69,8 @@ $(document).ready(function () {
     // index when inserting a new item (e.g. 2)
     $collectionHolder.data('index', $collectionHolder.find(':input').length);
 
-    var $nb = $collectionHolder.find(':input').length;
+    // Je divise par 2 car pour UNE donnée en base, j'envoie également UNE donnée en hidden
+    var $nb = ($collectionHolder.find(':input').length)/2;
 
     // we must have at least 3 grading scales
     if ($nb < 3) {

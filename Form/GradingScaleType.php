@@ -17,7 +17,8 @@ class GradingScaleType extends AbstractType
                 array(
                     'required' => true,
                     'label' => false,
-                    )
+                    'attr' => array('class' => 'form-control-scale'),
+                   )
                 )
             ->add('id', 'hidden')
             ;

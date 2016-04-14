@@ -41,7 +41,7 @@
 
         <h3>{{ 'ratingScale'|trans({}, 'innova_collecticiel') }}</h3>
 
-        <ul class="tags" data-prototype="{{ _self.gradingScale_prototype(form.gradingScales.vars.prototype)|e }}">
+        <ul class="tags list1" data-prototype="{{ _self.gradingScale_prototype(form.gradingScales.vars.prototype)|e }}">
             {# Affichage des données de la base #}
             {% for scale in form.gradingScales %}
                 {{ _self.gradingScale_prototype(scale) }}
@@ -119,12 +119,14 @@
 {% endblock %}
 
 {% macro gradingScale_prototype(gradingScale) %}
-    <div class="row">
-        <div class="col-md-8">
-            {{ form_row(gradingScale.scaleName) }}
-            {{ form_row(gradingScale.id) }}
+    <li>
+        <div class="row">
+            <div class="col-md-8">
+                {{ form_row(gradingScale.scaleName) }}
+                {{ form_row(gradingScale.id) }}
+            </div>
         </div>
-    </div>
+    </li>
 {% endmacro %}
 
 {% block stylesheets %}
