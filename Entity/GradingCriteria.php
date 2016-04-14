@@ -6,6 +6,7 @@
 
 namespace Innova\CollecticielBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="innova_collecticielbundle_grading_criteria")
  */
 class GradingCriteria {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -30,12 +32,12 @@ class GradingCriteria {
     */
     /**
      * @ORM\ManyToOne(
-     *      targetEntity="Innova\CollecticielBundle\Entity\Dropzone"
+     *      targetEntity="Innova\CollecticielBundle\Entity\Dropzone",
+     *      inversedBy="gradingCriterias"
      * )
-     * @ORM\JoinColumn(name="dropzone_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="dropzone_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     protected $dropzone;
-
 
     /**
      * Get id
@@ -47,6 +49,14 @@ class GradingCriteria {
         return $this->id;
     }
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+    
     /**
      * Set criteriaName
      *
@@ -94,4 +104,5 @@ class GradingCriteria {
     {
         return $this->dropzone;
     }
+
 }

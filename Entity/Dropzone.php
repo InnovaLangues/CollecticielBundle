@@ -9,6 +9,7 @@
  * Modifiey by : Eric VINCENT InnovaERV Add EvaluationType Column (02/02/2016)
  * Modifiey by : Eric VINCENT InnovaERV Add MaximumNotation Column (16/03/2016)
  * Modifiey by : Eric VINCENT InnovaERV Add ArrayCollection GradingScale (04/2016)
+ * Modifiey by : Eric VINCENT InnovaERV Add ArrayCollection GradingCriteria (04/2016)
 */
 
 namespace Innova\CollecticielBundle\Entity;
@@ -320,9 +321,22 @@ class Dropzone extends AbstractResource
      */
     public $gradingScales;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Innova\CollecticielBundle\Entity\GradingCriteria",
+     *     mappedBy="dropzone",
+     *     cascade={"all"},
+     *     orphanRemoval=true
+     * )
+     */
+    public $gradingCriterias;
+
     public function __construct()
     {
         $this->gradingScales = new ArrayCollection();
+        $this->gradingCriterias = new ArrayCollection();
         $this->drops = new ArrayCollection();
         $this->peerReviewCriteria = new ArrayCollection();
     }
@@ -1255,14 +1269,37 @@ class Dropzone extends AbstractResource
     }
 
 
+    /**
+     * Add gradingCriteria
+     *
+     * @param \Innova\CollecticielBundle\Entity\GradingCriteria $gradingCriteria
+     *
+     * @return Dropzone
+     */
+    public function addGradingCriteria(\Innova\CollecticielBundle\Entity\GradingCriteria $gradingCriteria)
+    {
+        $this->gradingCriterias[] = $gradingCriteria;
 
+        return $this;
+    }
 
+    /**
+     * Remove gradingCriteria
+     *
+     * @param \Innova\CollecticielBundle\Entity\GradingCriteria $gradingCriteria
+     */
+    public function removeGradingCriteria(\Innova\CollecticielBundle\Entity\GradingCriteria $gradingCriteria)
+    {
+        $this->gradingCriterias->removeElement($gradingCriteria);
+    }
 
-
-
-
-
-
-
-
+    /**
+     * Get gradingCriterias
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGradingCriterias()
+    {
+        return $this->gradingCriterias;
+    }
 }

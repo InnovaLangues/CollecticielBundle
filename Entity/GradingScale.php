@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="innova_collecticielbundle_grading_scale")
  */
 class GradingScale {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -101,9 +102,9 @@ class GradingScale {
         return $this->dropzone;
     }
 
-public function __toString()
-{
-    return $this->dropzone();
-}
+    public function __toString()
+    {
+        return $this->dropzone();
+    }
     
 }
