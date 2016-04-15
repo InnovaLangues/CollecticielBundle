@@ -7,22 +7,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class DropzoneAppreciationType extends AbstractType
+class DropzoneCriteriaCollectionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
         $builder
-            ->add('gradingScales', 'collection',
-                array
-                    (
-                    'type' => new GradingScaleType(),
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'mapped' => true,
-                    'by_reference' => false,
-                    )
-                 )
             ->add('gradingCriterias', 'collection',
                 array
                     (
@@ -38,7 +28,7 @@ class DropzoneAppreciationType extends AbstractType
 
     public function getName()
     {
-        return 'innova_collecticiel_appreciation_form';
+        return 'innova_collecticiel_criteriacollection_form';
     }
 
     public function configureOptions(OptionsResolver $resolver)

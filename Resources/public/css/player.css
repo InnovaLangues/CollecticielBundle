@@ -184,3 +184,7 @@ li *{
 input.form-control-scale {
   width : 100%;
 }
+/* Pour agrandir la zone de saisie */
+input.form-control-criteria {
+  width : 100%;
+}
