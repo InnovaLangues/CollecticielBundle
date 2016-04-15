@@ -179,6 +179,12 @@ li *{
 .list1 li{
     list-style: none;
    }
+
+/* Pour ne plus afficher les puces */
+.list2 li{
+    list-style: none;
+   }
+    
     
 /* Pour agrandir la zone de saisie */
 input.form-control-scale {

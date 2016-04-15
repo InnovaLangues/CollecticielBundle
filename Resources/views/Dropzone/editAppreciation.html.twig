@@ -56,15 +56,15 @@
         {{ 'Add grading scale'|trans({}, 'innova_collecticiel') }}
         </button>
 
-        <ul class="tags list1" data-prototype="{{ _self.gradingScale_prototype(form.gradingScales.vars.prototype)|e }}">
+
+        <h3>{{ 'Info ratingScale'|trans({}, 'innova_collecticiel') }}</h3>
+
+        <ul class="tags list2" data-prototype="{{ _self.gradingCriteria_prototype(form.gradingCriterias.vars.prototype)|e }}">
             {# Affichage des données de la base #}
             {% for criteria in form.gradingCriterias %}
                 {{ _self.gradingCriteria_prototype(criteria) }}
             {% endfor %}
         </ul>
-
-
-        <h3>{{ 'Info ratingScale'|trans({}, 'innova_collecticiel') }}</h3>
 
         <button id="submitAndGotoCriteriaButton" type="submit" class="btn btn-primary">
         {{ 'Add a new'|trans({}, 'innova_collecticiel') }}
