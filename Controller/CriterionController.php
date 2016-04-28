@@ -22,7 +22,7 @@ class CriterionController extends DropzoneBaseController
 {
     /**
      * @Route(
-     *      "/{resourceId}/edit/addcriterion/{page}/{criterionId}",
+     *      "/{resourceId}/edit/addcriterion/{page}/{criterionId}/{adminInnova}/{collecticielOpenOrNot}",
      *      name="innova_collecticiel_edit_add_criterion",
      *      requirements={"resourceId" = "\d+", "criterionId" = "\d+", "page" = "\d+"},
      *      defaults={"criterionId" = 0}
@@ -30,7 +30,7 @@ class CriterionController extends DropzoneBaseController
      * @ParamConverter("dropzone", class="InnovaCollecticielBundle:Dropzone", options={"id" = "resourceId"})
      * @Template()
      */
-    public function editAddCriterionAction($dropzone, $page, $criterionId)
+    public function editAddCriterionAction($dropzone, $page, $criterionId, $adminInnova, $collecticielOpenOrNot)
     {
 
         $this->get('innova.manager.dropzone_voter')->isAllowToOpen($dropzone);
@@ -50,7 +50,7 @@ class CriterionController extends DropzoneBaseController
         $form = $this->createForm(new CriterionType(), $criterion);
 
         if ($this->getRequest()->isXMLHttpRequest()) {
-
+var_dump("ici isXMLHttpRequest");
             return $this->render(
                 'InnovaCollecticielBundle:Criterion:editAddCriterionModal.html.twig',
                 array(
@@ -64,13 +64,15 @@ class CriterionController extends DropzoneBaseController
             );
         }
 
+var_dump("avant return array");
         return array(
             'workspace' => $dropzone->getResourceNode()->getWorkspace(),
             '_resource' => $dropzone,
             'dropzone' => $dropzone,
             'form' => $form->createView(),
             'criterion' => $criterion,
-            'page' => $page
+            'page' => $page,
+            'adminInnova' => $adminInnova
         );
     }
 
